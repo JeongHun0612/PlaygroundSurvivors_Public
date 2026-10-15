@@ -1,0 +1,8 @@
+# Preserve original code/data bytes and prevent PDF newline conversion.
+*.cs -text
+*.csv -text
+*.pdf binary
+*.png binary
+*.md text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf

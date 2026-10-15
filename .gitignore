@@ -1,0 +1,27 @@
+# Public source-view repository. Unity project assets are intentionally omitted.
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vs/
+.vscode/
+.idea/
+__pycache__/
+*.pyc
+*.tmp
+*.log
+.env
+.env.*
+!.env.example
+*.pfx
+*.p12
+*.keystore
+*.jks
+**/[Ll]ibrary/
+**/[Tt]emp/
+**/[Oo]bj/
+**/[Bb]uilds/
+**/[Uu]ser[Ss]ettings/
+*.csproj
+*.sln
+*.slnx
+*.unitypackage
