@@ -84,8 +84,6 @@ Windows Development Build, Unity 6000.4.5f1, Ryzen 5 5600G·내장 Radeon Graphi
 
 <img src="media/terrain-raycast.png" width="720" alt="PDF의 다층 지형 추적 도식. Low Ray로 일반 지면 높이를 확인하고, High Ray로 검출한 여러 층 중 플레이어 높이에 가까운 층을 선택">
 
-[포트폴리오 4쪽](media/portfolio.pdf#page=4)의 Low·High Raycast 설명 이미지입니다.
-
 ## 공개 범위
 
 이 저장소는 **개발 포트폴리오 검토를 위한 소스 열람용 저장소**입니다.
