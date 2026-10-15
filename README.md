@@ -6,9 +6,8 @@
 
 개발자 4인 팀에서 **팀장 · 코어 시스템 · 전투 판정**을 담당했습니다. 게임 진행 상태와 보상·UI 흐름을 연결하고, 몬스터 관리 구조 위에 플레이어 통과 방지·접촉 피해·피격 연출을 구현했습니다.
 
-- [상세 기술 포트폴리오 (PDF)](media/portfolio.pdf)
-- [플레이 빌드 다운로드](https://drive.google.com/file/d/1oNmeh3siO_rDWiSACH8VF8TwcTK79cmE/view?usp=sharing)
-- [성능 측정 조건과 원자료](docs/performance.md)
+- <img src="media/icons/pdf.svg" width="20" height="20" alt="PDF"> [상세 기술 포트폴리오 (PDF)](media/portfolio.pdf)
+- <img src="media/icons/youtube.svg" width="20" height="20" alt="YouTube"> [플레이·구현 시연 영상](https://youtu.be/h3YhS_BtGJY)
 
 <p align="center">
   <img src="media/gameplay-combat.png" width="48%" alt="몬스터 무리와 싸우며 경험치를 모으는 실제 플레이">
