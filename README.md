@@ -61,12 +61,6 @@ UI 레지스트리에 등록된 화면과 팝업을 Addressables·UniTask로 로
 | NavMesh 없는 3D 추적 | XZ 직선 추적과 지면 Raycast 결합, 높이 차이가 크거나 일반 검사 실패 시 다중 결과에서 플레이어 높이에 가까운 지면 선택 | [Enemy](Scripts/GamePlay/Enemy/Enemy.cs) |
 | VAT + GPU Instancing | SmartVAT로 정점 애니메이션을 텍스처에 굽고, 같은 종류의 몬스터를 묶어 렌더링 | [몬스터 애니메이션 상태 제어](Scripts/GamePlay/Enemy/Enemy.cs) |
 
-### 다층 지형 추적
-
-<img src="media/terrain-pursuit.gif" width="720" alt="고저차 발판을 이동하는 플레이어를 몬스터가 따라오는 실제 플레이 GIF">
-
-고저차 발판에서의 플레이어 이동과 몬스터 추적 장면입니다.
-
 ### 성능 비교 · 몬스터 300마리
 
 풀링·Update 호출 방식·VAT를 각각 **300마리 조건**에서 비교한 결과입니다.
@@ -83,6 +77,14 @@ Windows Development Build, Unity 6000.4.5f1, Ryzen 5 5600G·내장 Radeon Graphi
 <img src="media/frame-debugger-300.png" width="960" alt="몬스터 7종 300마리를 배치한 에디터 Frame Debugger 검증 캡처. 선택한 드로우콜의 Instances 46 표시">
 
 **당시 저장한 300마리 Frame Debugger 캡처**입니다. 몬스터 7종을 배치한 별도 에디터 검증에서, 같은 종류 46마리가 한 번의 드로우콜로 묶이는 것을 확인했습니다(`Instances 46`). 위 표의 CPU 시간은 Development Build의 CSV 측정값입니다.
+
+### 다층 지형 추적
+
+수평은 플레이어 방향으로 XZ 직선 이동하고, 수직은 Raycast로 지면 높이를 보정합니다. 평지·작은 언덕에서는 짧은 단일 결과 Raycast를 사용하고, 플레이어가 몬스터보다 2m 넘게 높거나 단일 검사에 실패하면 다중 검사 결과에서 플레이어 높이에 가장 가까운 지면을 선택합니다.
+
+<img src="media/terrain-raycast.png" width="720" alt="PDF의 다층 지형 추적 도식. Low Ray로 일반 지면 높이를 확인하고, High Ray로 검출한 여러 층 중 플레이어 높이에 가까운 층을 선택">
+
+[포트폴리오 4쪽](media/portfolio.pdf#page=4)의 Low·High Raycast 설명 이미지입니다.
 
 ## 공개 범위
 
