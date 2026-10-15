@@ -56,11 +56,11 @@ UI 레지스트리에 등록된 화면과 팝업을 Addressables·UniTask로 로
 
 접촉 피해는 물리 충돌 콜백 대신 몬스터의 관리 루프에서 플레이어와의 3D 거리·쿨타임을 확인해 전달합니다. 피격 점멸은 공용 컴포넌트로 분리하고 `MaterialPropertyBlock`으로 색을 변경합니다.
 
-<img src="media/terrain-pursuit.gif" width="720" alt="고저차 발판을 이동하는 플레이어를 몬스터가 따라오는 실제 플레이 GIF">
+<img src="media/player-contact-flow.svg" width="1000" alt="통과 방지는 주변 조회와 높이·거리 검사 후 접근 속도를 보정하고, 접촉 피해는 관리 루프에서 3D 거리·쿨타임을 확인해 처리하는 구현 흐름도">
 
-고저차 발판에서의 플레이어 이동과 몬스터 추적 장면입니다.
+구현 흐름도입니다. 위는 플레이어 이동 속도의 통과 방지 처리, 아래는 몬스터의 접촉 피해와 피격 점멸 호출 흐름을 보여줍니다.
 
-대표 코드: [PlayerMotor](Scripts/GamePlay/Player/PlayerMotor.cs) · [OverlapBlockUtility](Scripts/GamePlay/Combat/OverlapBlockUtility.cs) · [BlockableRegistry](Scripts/GamePlay/Combat/BlockableRegistry.cs) · [Enemy](Scripts/GamePlay/Enemy/Enemy.cs) · [HitFlashEffect](Scripts/GamePlay/Visual/HitFlashEffect.cs)
+대표 코드: [PlayerMotor](Scripts/GamePlay/Player/PlayerMotor.cs) · [OverlapBlockUtility](Scripts/GamePlay/Combat/OverlapBlockUtility.cs) · [BlockableRegistry](Scripts/GamePlay/Combat/BlockableRegistry.cs) · [Enemy](Scripts/GamePlay/Enemy/Enemy.cs) · [PlayerDamageReceiver](Scripts/GamePlay/Player/PlayerDamageReceiver.cs) · [HitFlashEffect](Scripts/GamePlay/Visual/HitFlashEffect.cs)
 
 ## 프로젝트 기술과 성능 검증
 
@@ -73,20 +73,41 @@ UI 레지스트리에 등록된 화면과 팝업을 Addressables·UniTask로 로
 | NavMesh 없는 3D 추적 | XZ 직선 추적과 지면 Raycast 결합, 높이 차이가 크거나 일반 검사 실패 시 다중 결과에서 플레이어 높이에 가까운 지면 선택 | [Enemy](Scripts/GamePlay/Enemy/Enemy.cs) |
 | VAT + GPU Instancing | SmartVAT로 정점 애니메이션을 텍스처에 굽고, 같은 종류의 몬스터를 묶어 렌더링 | [몬스터 애니메이션 상태 제어](Scripts/GamePlay/Enemy/Enemy.cs) |
 
-<img src="media/monsters-1000.png" width="760" alt="렌더링 테스트용으로 토끼 몬스터 1,000마리를 배치한 정지 화면">
+### 다층 지형 추적
 
-위 이미지는 **렌더링 테스트용 1,000마리 배치 화면**입니다.
+<img src="media/terrain-pursuit.gif" width="720" alt="고저차 발판을 이동하는 플레이어를 몬스터가 따라오는 실제 플레이 GIF">
+
+고저차 발판에서의 플레이어 이동과 몬스터 추적 장면입니다.
+
+### 300마리 · 풀링과 ManagedUpdate 비교
+
+300마리를 유지한 상태에서 스폰·회수 방식과 Update 호출 방식을 각각 비교했습니다. 두 실험 모두 렌더 스케일 0.3, 60 FPS 상한 조건입니다.
 
 | 비교 항목 | 변경 전 | 적용 후 | 측정 조건 |
 |---|---:|---:|---|
 | 스폰 1회 GC 할당 | 1,090 B | 평균 약 24 B | 300마리 유지, 초당 약 97마리 교체 |
 | 프레임당 스크립트 Update 시간 | 3.69 ms | 3.19 ms | 300마리, 개별 Update와 매니저 순회 비교 |
-| 프레임당 메인 스레드 시간 | 26.8 ms | 6.4 ms | 같은 모델 1,000마리, Animator와 VAT 비교 |
-| 몬스터 배치에 따른 드로우콜 증가분 | 약 5,100개 | 약 22개 | 위 렌더링 비교에서 빈 씬 대비 증가분 |
 
-Windows Development Build, Unity 6000.4.5f1, Ryzen 5 5600G·내장 Radeon Graphics, 렌더 스케일 0.3에서 측정했습니다. Update·풀링 비교는 60 FPS 상한을 적용했습니다. VAT 비교는 **추적·전투를 제외한 렌더링 비교**이며, 전체 게임 플레이의 1,000마리 성능을 뜻하지 않습니다. 자세한 지표 정의와 제한은 [성능 측정 문서](docs/performance.md)에 정리했습니다.
+### 1,000마리 · VAT 렌더링 비교
+
+<img src="media/monsters-1000.png" width="760" alt="렌더링 테스트용으로 토끼 몬스터 1,000마리를 배치한 예시 화면">
+
+**토끼 몬스터 1,000마리 배치 예시**입니다. 아래 표는 별도로 측정한 **Burrow 모델 1,000마리의 Animator·VAT 비교 결과**입니다.
+
+| 비교 항목 | Animator | VAT | 측정 조건 |
+|---|---:|---:|---|
+| 프레임당 메인 스레드 시간 | 26.8 ms | 6.4 ms | 같은 모델 1,000마리, 추적·전투 제외 |
+| 몬스터 배치에 따른 드로우콜 증가분 | 약 5,100개 | 약 22개 | 같은 모델 1,000마리, 빈 씬 대비 증가분 |
+
+VAT 비교는 렌더 스케일 0.3, FPS 상한 없음 조건의 **추적·전투를 제외한 렌더링 비교**이며, 전체 게임 플레이의 1,000마리 성능을 뜻하지 않습니다.
+
+측정 환경은 Windows Development Build, Unity 6000.4.5f1, Ryzen 5 5600G·내장 Radeon Graphics입니다. 자세한 지표 정의와 제한은 [성능 측정 문서](docs/performance.md)에 정리했습니다.
+
+### Profiler·Frame Debugger 확인
 
 <img src="media/profiling.png" width="960" alt="포트폴리오의 Profile Analyzer와 Frame Debugger 검증 화면. 1,000마리 VAT 비교와 300마리 GPU Instancing 비교">
+
+상단은 **1,000마리의 Animator·VAT 비교**, 하단은 별도 **300마리의 GPU Instancing 확인**입니다.
 
 ## 공개 범위
 
