@@ -3,6 +3,7 @@
 *.csv -text
 *.pdf binary
 *.png binary
+*.gif binary
 *.svg text eol=lf
 *.md text eol=lf
 .gitignore text eol=lf

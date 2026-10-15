@@ -10,8 +10,8 @@
 - <img src="media/icons/youtube.svg" width="20" height="20" alt="YouTube"> [플레이·구현 시연 영상](https://youtu.be/h3YhS_BtGJY)
 
 <p align="center">
-  <img src="media/gameplay-combat.png" width="48%" alt="몬스터 무리와 싸우며 경험치를 모으는 실제 플레이">
-  <img src="media/gameplay-boss.png" width="48%" alt="보스의 범위 공격을 피하며 전투하는 실제 플레이">
+  <img src="media/gameplay-combat.gif" width="48%" alt="몬스터 무리와 싸우며 경험치를 모으는 실제 플레이 GIF">
+  <img src="media/gameplay-boss.gif" width="48%" alt="보스의 범위 공격을 피하며 전투하는 실제 플레이 GIF">
 </p>
 
 ## 프로젝트 정보
@@ -44,7 +44,9 @@ UI 레지스트리에 등록된 화면과 팝업을 Addressables·UniTask로 로
 
 레벨업 시 보상 선택 상태로 전환하고, 한 번에 오른 레벨 수만큼 선택을 순서대로 처리한 뒤 게임을 재개합니다. 상자 보상은 별도 흐름으로 분리했습니다.
 
-<img src="media/levelup.png" width="760" alt="무기·패시브 보상 후보와 캐릭터 능력치를 함께 표시하는 레벨업 UI">
+<img src="media/chest-reward.gif" width="720" alt="상자를 열어 보상 카드가 순서대로 공개되고 아이템을 획득하는 실제 플레이 GIF">
+
+골드로 상자를 열면 보상 카드가 순서대로 공개되고, 등장한 아이템을 획득합니다.
 
 대표 코드: [UIManager](Scripts/UI/UIManager.cs) · [ResourceService](Scripts/Core/Resource/ResourceService.cs) · [ServiceBootstrapper](Scripts/Core/Bootstrap/ServiceBootstrapper.cs) · [LevelUpRewardFlow](Scripts/Core/Reward/LevelUpRewardFlow.cs) · [ChestRewardFlow](Scripts/Core/Reward/ChestRewardFlow.cs)
 
@@ -54,7 +56,9 @@ UI 레지스트리에 등록된 화면과 팝업을 Addressables·UniTask로 로
 
 접촉 피해는 물리 충돌 콜백 대신 몬스터의 관리 루프에서 플레이어와의 3D 거리·쿨타임을 확인해 전달합니다. 피격 점멸은 공용 컴포넌트로 분리하고 `MaterialPropertyBlock`으로 색을 변경합니다.
 
-<img src="media/terrain.png" width="760" alt="고저차가 있는 발판에서 플레이어를 따라오는 몬스터">
+<img src="media/terrain-pursuit.gif" width="720" alt="고저차 발판을 이동하는 플레이어를 몬스터가 따라오는 실제 플레이 GIF">
+
+고저차 발판에서의 플레이어 이동과 몬스터 추적 장면입니다.
 
 대표 코드: [PlayerMotor](Scripts/GamePlay/Player/PlayerMotor.cs) · [OverlapBlockUtility](Scripts/GamePlay/Combat/OverlapBlockUtility.cs) · [BlockableRegistry](Scripts/GamePlay/Combat/BlockableRegistry.cs) · [Enemy](Scripts/GamePlay/Enemy/Enemy.cs) · [HitFlashEffect](Scripts/GamePlay/Visual/HitFlashEffect.cs)
 
@@ -89,7 +93,7 @@ Windows Development Build, Unity 6000.4.5f1, Ryzen 5 5600G·내장 Radeon Graphi
 이 저장소는 **개발 포트폴리오 검토를 위한 소스 열람용 저장소**입니다.
 
 - `Scripts/`: 프로젝트 C# 코드. 본인 담당 코드와 연관된 팀 프로젝트 코드를 함께 포함합니다.
-- `media/`: 상세 포트폴리오 PDF, 실제 플레이 이미지, 렌더링 테스트·프로파일링 자료.
+- `media/`: 상세 포트폴리오 PDF, 실제 플레이 GIF·이미지, 렌더링 테스트·프로파일링 자료.
 - `docs/`: 성능 측정 조건과 비교에 사용한 요약 CSV.
 - Unity Scene·Prefab·프로젝트 설정·원본 아트·폰트·음원·외부 SDK와 라이브러리 원본은 포함하지 않아 **이 저장소만으로 실행하거나 빌드할 수 없습니다.**
 - 외부 의존성에는 Addressables, UniTask, DOTween, Kinematic Character Controller, Cinemachine, SmartVAT 등이 있습니다. 외부 라이브러리·도구·에셋은 각 제공처의 이용 조건을 따릅니다.
