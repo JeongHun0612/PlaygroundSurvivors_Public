@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1084" height="376" viewBox="0 0 1084 376" role="img" aria-labelledby="title description">
+  <title id="title">게임 진행 상태와 런타임 데이터 구성도</title>
+  <desc id="description">캐릭터·무기·아이템 정의에서 PlayerRuntime, RunSession, 이벤트, HUD·UI 갱신으로 이어집니다. RunManager는 RunSession에 연결되며, 플레이어·스테이지·보상 연결은 RunManager 바로 아래에 배치합니다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#6e7781"/>
+    </marker>
+  </defs>
+  <style>
+    .node { fill: #f6f8fa; stroke: #d1d9e0; stroke-width: 1.5; }
+    .edge { fill: none; stroke: #6e7781; stroke-width: 1.7; stroke-linejoin: round; marker-end: url(#arrow); }
+    text { fill: #1f2328; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif; font-size: 14px; text-anchor: middle; }
+    .heading { font-size: 16px; font-weight: 600; }
+  </style>
+  <g aria-label="연결선">
+    <path class="edge" d="M 200 64 H 236"/>
+    <path class="edge" d="M 416 64 H 434 V 96 H 452"/>
+    <path class="edge" d="M 200 192 H 434 V 128 H 452"/>
+    <path class="edge" d="M 110 228 V 268"/>
+    <path class="edge" d="M 632 112 H 668"/>
+    <path class="edge" d="M 848 112 H 884"/>
+  </g>
+  <g aria-label="캐릭터·무기·아이템 정의">
+    <rect class="node" x="20" y="20" width="180" height="88" rx="7"/>
+    <text x="110" y="57">캐릭터·무기·아이템</text>
+    <text x="110" y="79">정의 · ScriptableObject</text>
+  </g>
+  <g aria-label="PlayerRuntime">
+    <rect class="node" x="236" y="20" width="180" height="88" rx="7"/>
+    <text class="heading" x="326" y="48">PlayerRuntime</text>
+    <text x="326" y="70">체력·레벨·능력치</text>
+    <text x="326" y="90">인벤토리</text>
+  </g>
+  <g aria-label="RunSession">
+    <rect class="node" x="452" y="68" width="180" height="88" rx="7"/>
+    <text class="heading" x="542" y="106">RunSession</text>
+    <text x="542" y="129">상태·시간·킬 수·골드</text>
+  </g>
+  <g aria-label="RunManager">
+    <rect class="node" x="20" y="156" width="180" height="72" rx="7"/>
+    <text class="heading" x="110" y="198">RunManager</text>
+  </g>
+  <g aria-label="플레이어·스테이지·보상 연결">
+    <rect class="node" x="20" y="268" width="180" height="88" rx="7"/>
+    <text x="110" y="305">플레이어·스테이지</text>
+    <text x="110" y="328">보상 연결</text>
+  </g>
+  <g aria-label="이벤트">
+    <rect class="node" x="668" y="68" width="180" height="88" rx="7"/>
+    <text class="heading" x="758" y="118">이벤트</text>
+  </g>
+  <g aria-label="HUD·UI 갱신">
+    <rect class="node" x="884" y="68" width="180" height="88" rx="7"/>
+    <text class="heading" x="974" y="118">HUD·UI 갱신</text>
+  </g>
+</svg>

@@ -34,15 +34,7 @@
 
 캐릭터·무기·아이템의 정의는 ScriptableObject에 두고, 현재 체력·레벨·능력치·인벤토리는 런타임 객체로 관리합니다. 런타임 변경을 이벤트로 전달해 HUD와 게임 진행을 연결했습니다.
 
-```mermaid
-flowchart LR
-    data["캐릭터·무기·아이템 정의<br/>ScriptableObject"] --> runtime["PlayerRuntime<br/>체력·레벨·능력치·인벤토리"]
-    runtime --> session["RunSession<br/>상태·시간·킬 수·골드"]
-    manager["RunManager"] --> session
-    manager --> systems["플레이어·스테이지·보상 연결"]
-    session --> events["이벤트"]
-    events --> hud["HUD·UI 갱신"]
-```
+<img src="media/runtime-architecture.svg" width="1000" alt="게임 진행 상태와 런타임 데이터 구성도. 플레이어·스테이지·보상 연결을 RunManager 바로 아래에 배치">
 
 대표 코드: [RunManager](Scripts/Core/Bootstrap/RunManager.cs) · [RunSession](Scripts/GamePlay/Runtime/RunSession.cs) · [PlayerRuntime](Scripts/GamePlay/Runtime/PlayerRuntime.cs) · [EventBus](Scripts/Core/EventBus/EventBus.cs)
 
