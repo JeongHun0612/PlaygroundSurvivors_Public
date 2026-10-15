@@ -67,35 +67,22 @@ UI 레지스트리에 등록된 화면과 팝업을 Addressables·UniTask로 로
 
 고저차 발판에서의 플레이어 이동과 몬스터 추적 장면입니다.
 
-### 300마리 · 풀링과 ManagedUpdate 비교
+### 성능 비교 · 몬스터 300마리
 
-300마리를 유지한 상태에서 스폰·회수 방식과 Update 호출 방식을 각각 비교했습니다. 두 실험 모두 렌더 스케일 0.3, 60 FPS 상한 조건입니다.
+풀링·Update 호출 방식·VAT를 각각 **300마리 조건**에서 비교한 결과입니다.
 
 | 비교 항목 | 변경 전 | 적용 후 | 측정 조건 |
 |---|---:|---:|---|
 | 스폰 1회 GC 할당 | 1,090 B | 평균 약 24 B | 300마리 유지, 초당 약 97마리 교체 |
 | 프레임당 스크립트 Update 시간 | 3.69 ms | 3.19 ms | 300마리, 개별 Update와 매니저 순회 비교 |
+| 프레임당 메인 스레드 시간 | 12.8 ms | 6.4 ms | 같은 모델 300마리, Animator와 VAT 비교 |
+| 몬스터 배치에 따른 드로우콜 증가분 | 약 2,316개 | 약 21개 | 같은 모델 300마리, 빈 씬 대비 증가분 |
 
-### 1,000마리 · VAT 렌더링 비교
+Windows Development Build, Unity 6000.4.5f1, Ryzen 5 5600G·내장 Radeon Graphics, 렌더 스케일 0.3에서 측정했습니다. 풀링·Update 비교는 60 FPS 상한을 적용했고, VAT 비교는 FPS 상한 없이 **추적·전투를 제외한 렌더링만** 비교했습니다. 자세한 지표 정의와 1,000마리 추가 측정은 [성능 측정 문서](docs/performance.md)에 정리했습니다.
 
-<img src="media/monsters-1000.png" width="760" alt="렌더링 테스트용으로 토끼 몬스터 1,000마리를 배치한 예시 화면">
+<img src="media/frame-debugger-300.png" width="960" alt="몬스터 7종 300마리를 배치한 에디터 Frame Debugger 검증 캡처. 선택한 드로우콜의 Instances 46 표시">
 
-**토끼 몬스터 1,000마리 배치 예시**입니다. 아래 표는 별도로 측정한 **Burrow 모델 1,000마리의 Animator·VAT 비교 결과**입니다.
-
-| 비교 항목 | Animator | VAT | 측정 조건 |
-|---|---:|---:|---|
-| 프레임당 메인 스레드 시간 | 26.8 ms | 6.4 ms | 같은 모델 1,000마리, 추적·전투 제외 |
-| 몬스터 배치에 따른 드로우콜 증가분 | 약 5,100개 | 약 22개 | 같은 모델 1,000마리, 빈 씬 대비 증가분 |
-
-VAT 비교는 렌더 스케일 0.3, FPS 상한 없음 조건의 **추적·전투를 제외한 렌더링 비교**이며, 전체 게임 플레이의 1,000마리 성능을 뜻하지 않습니다.
-
-측정 환경은 Windows Development Build, Unity 6000.4.5f1, Ryzen 5 5600G·내장 Radeon Graphics입니다. 자세한 지표 정의와 제한은 [성능 측정 문서](docs/performance.md)에 정리했습니다.
-
-### Profiler·Frame Debugger 확인
-
-<img src="media/profiling.png" width="960" alt="포트폴리오의 Profile Analyzer와 Frame Debugger 검증 화면. 1,000마리 VAT 비교와 300마리 GPU Instancing 비교">
-
-상단은 **1,000마리의 Animator·VAT 비교**, 하단은 별도 **300마리의 GPU Instancing 확인**입니다.
+**당시 저장한 300마리 Frame Debugger 캡처**입니다. 몬스터 7종을 배치한 별도 에디터 검증에서, 같은 종류 46마리가 한 번의 드로우콜로 묶이는 것을 확인했습니다(`Instances 46`). 위 표의 CPU 시간은 Development Build의 CSV 측정값입니다.
 
 ## 공개 범위
 

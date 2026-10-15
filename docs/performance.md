@@ -57,7 +57,19 @@
 
 ## 4. VAT 렌더링 비교
 
-같은 모델 1,000마리를 배치하고 Animator + SkinnedMeshRenderer와 VAT를 비교했습니다. 렌더 스케일 0.3, FPS 상한 없음, **몬스터 추적·전투 제외** 조건입니다.
+같은 Burrow 모델을 배치하고 Animator + SkinnedMeshRenderer와 VAT를 비교했습니다. 렌더 스케일 0.3, FPS 상한 없음, **몬스터 추적·전투 제외** 조건입니다. README에는 다른 비교와 대상 수를 맞춘 300마리 결과를 사용합니다.
+
+### 300마리 · README 기준
+
+| 지표 | Animator | VAT |
+|---|---:|---:|
+| 메인 스레드 시간 (`ftMainMs`) | 12.79 ms | 6.42 ms |
+| 프레임률 | 66.0 FPS | 109.9 FPS |
+| 빈 씬 대비 드로우콜 증가분 | 약 2,316개 | 약 21개 |
+
+원자료: [vatLowb/summary.csv](benchmarks/vatLowb/summary.csv), `empty`·`skin300`·`vat300` 행. 두 방식 모두 300개 렌더러가 화면 안으로 판정됐습니다.
+
+### 1,000마리 · 추가 측정
 
 | 지표 | Animator | VAT |
 |---|---:|---:|
@@ -72,6 +84,10 @@
 Animator 케이스는 배치한 1,000개 중 925개가 화면 안으로 판정됐고 VAT는 1,000개였습니다. 이 가시성 차이가 있어 완전히 동일한 렌더러 수를 그리는 비교로 보아서는 안 됩니다. 수치는 해당 모델·머티리얼·카메라 구성에 한정됩니다.
 
 ## Profiler·Frame Debugger 확인
+
+<img src="../media/frame-debugger-300.png" width="1100" alt="몬스터 7종 300마리의 Frame Debugger 원본 캡처. 선택한 드로우콜에 Instances 46 표시">
+
+README에 사용한 원본 Frame Debugger 캡처입니다. 에디터 플레이 모드에서 몬스터 7종·300마리를 배치했으며, 선택한 드로우콜에 같은 종류 46마리가 포함됩니다. 이 캡처는 그리기 구성을 확인하는 자료이고, CPU 시간은 위 Development Build의 요약 CSV에서 읽습니다.
 
 <img src="../media/profiling.png" width="1100" alt="Profile Analyzer와 Frame Debugger 검증 자료">
 
