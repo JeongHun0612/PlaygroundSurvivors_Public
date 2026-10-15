@@ -50,18 +50,6 @@ UI 레지스트리에 등록된 화면과 팝업을 Addressables·UniTask로 로
 
 대표 코드: [UIManager](Scripts/UI/UIManager.cs) · [ResourceService](Scripts/Core/Resource/ResourceService.cs) · [ServiceBootstrapper](Scripts/Core/Bootstrap/ServiceBootstrapper.cs) · [LevelUpRewardFlow](Scripts/Core/Reward/LevelUpRewardFlow.cs) · [ChestRewardFlow](Scripts/Core/Reward/ChestRewardFlow.cs)
 
-### 3. 플레이어 통과 방지와 접촉 피해
-
-몬스터 관리용 그리드를 재사용해 플레이어 주변 몬스터를 조회하고, 접근 방향의 속도 성분을 제거해 몸을 뚫고 지나가는 것을 제한합니다. 그리드 밖의 보스 등은 `BlockableRegistry`로 등록해 같은 판정 흐름에서 처리합니다. 판정에는 높이 차이 조건도 적용합니다.
-
-접촉 피해는 물리 충돌 콜백 대신 몬스터의 관리 루프에서 플레이어와의 3D 거리·쿨타임을 확인해 전달합니다. 피격 점멸은 공용 컴포넌트로 분리하고 `MaterialPropertyBlock`으로 색을 변경합니다.
-
-<img src="media/player-contact-flow.svg" width="1000" alt="통과 방지는 주변 조회와 높이·거리 검사 후 접근 속도를 보정하고, 접촉 피해는 관리 루프에서 3D 거리·쿨타임을 확인해 처리하는 구현 흐름도">
-
-구현 흐름도입니다. 위는 플레이어 이동 속도의 통과 방지 처리, 아래는 몬스터의 접촉 피해와 피격 점멸 호출 흐름을 보여줍니다.
-
-대표 코드: [PlayerMotor](Scripts/GamePlay/Player/PlayerMotor.cs) · [OverlapBlockUtility](Scripts/GamePlay/Combat/OverlapBlockUtility.cs) · [BlockableRegistry](Scripts/GamePlay/Combat/BlockableRegistry.cs) · [Enemy](Scripts/GamePlay/Enemy/Enemy.cs) · [PlayerDamageReceiver](Scripts/GamePlay/Player/PlayerDamageReceiver.cs) · [HitFlashEffect](Scripts/GamePlay/Visual/HitFlashEffect.cs)
-
 ## 프로젝트 기술과 성능 검증
 
 일반 몬스터는 Rigidbody 충돌·NavMeshAgent·Animator 대신 다음 구조로 관리합니다. **풀링·그리드·추적·VAT의 기반 구조는 팀원이 구현했으며**, 저는 이 구조에 통과 방지·접촉 피해·피격 연출·런 상태 연동을 구현했습니다. 아래 수치는 프로젝트 기술을 비교 측정한 결과입니다.
